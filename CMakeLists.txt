@@ -17,6 +17,9 @@ MATH(EXPR RASQAL_VERSION_DECIMAL "${RASQAL_VERSION_MAJOR} * 10000 + ${RASQAL_VER
 
 project(Rasqal C)
 
+# To include generated files
+set(CMAKE_INCLUDE_CURRENT_DIR 1)
+
 if(NOT EXISTS "${CMAKE_SOURCE_DIR}/src/rasqal_general.c")
   # Wrong source dir - bail
   error(FATAL "src/rasqal_general.c not found within source directory - wrong source path specified?")
