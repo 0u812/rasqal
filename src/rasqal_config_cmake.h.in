@@ -1,0 +1,110 @@
+/* -*- Mode: c; c-basic-offset: 2 -*-
+ *
+ * rasqal.h - Rasqal RDF Query library interfaces and definition
+ *
+ * Copyright (C) 2015, J Kyle Medley
+ * Copyright (C) 2003-2010, David Beckett http://www.dajobe.org/
+ * Copyright (C) 2003-2005, University of Bristol, UK http://www.bristol.ac.uk/
+ *
+ * This package is Free Software and part of Redland http://librdf.org/
+ *
+ * It is licensed under the following three licenses as alternatives:
+ *   1. GNU Lesser General Public License (LGPL) V2.1 or any newer version
+ *   2. GNU General Public License (GPL) V2 or any newer version
+ *   3. Apache License, V2.0 or any newer version
+ *
+ * You may not use this file except in compliance with at least one of
+ * the above three licenses.
+ *
+ * See LICENSE.html or LICENSE.txt at the top of this package for the
+ * complete terms and further detail along with the license texts for
+ * the licenses in COPYING.LIB, COPYING and LICENSE-2.0.txt respectively.
+ *
+ */
+
+/**
+ * RASQAL_VERSION:
+ *
+ * Rasqal library version number
+ *
+ * Format: major * 10000 + minor * 100 + release
+ */
+#define RASQAL_VERSION @RASQAL_VERSION_DECIMAL@
+
+/**
+ * RASQAL_VERSION_STRING:
+ *
+ * Rasqal library version string
+ */
+#define RASQAL_VERSION_STRING "@VERSION@"
+
+/**
+ * RASQAL_VERSION_MAJOR:
+ *
+ * Rasqal library major version
+ */
+#define RASQAL_VERSION_MAJOR @RASQAL_VERSION_MAJOR@
+
+/**
+ * RASQAL_VERSION_MINOR:
+ *
+ * Rasqal library minor version
+ */
+#define RASQAL_VERSION_MINOR @RASQAL_VERSION_MINOR@
+
+/**
+ * RASQAL_VERSION_RELEASE:
+ *
+ * Rasqal library release
+ */
+#define RASQAL_VERSION_RELEASE @RASQAL_VERSION_RELEASE@
+
+/**
+ * Autodetected configuration information
+ */
+
+#cmakedefine HAVE_ERRNO_H
+#cmakedefine HAVE_FCNTL_H
+#cmakedefine HAVE_GETOPT_H
+#cmakedefine HAVE_LIMITS_H
+#cmakedefine HAVE_MATH_H
+#cmakedefine HAVE_SETJMP_H
+#cmakedefine HAVE_STDDEF_H
+#cmakedefine HAVE_STDLIB_H
+#cmakedefine HAVE_STRING_H
+#cmakedefine HAVE_UNISTD_H
+#cmakedefine HAVE_SYS_PARAM_H
+#cmakedefine HAVE_SYS_STAT_H
+#cmakedefine HAVE_SYS_STAT_H
+#cmakedefine HAVE_SYS_TIME_H
+
+#cmakedefine TIME_WITH_SYS_TIME
+
+#cmakedefine HAVE_ACCESS
+#cmakedefine HAVE__ACCESS
+#cmakedefine HAVE_GETOPT
+#cmakedefine HAVE_GETOPT_LONG
+#cmakedefine HAVE_GETTIMEOFDAY
+#cmakedefine HAVE_ISASCII
+#cmakedefine HAVE_SETJMP
+#cmakedefine HAVE_SNPRINTF
+#cmakedefine HAVE__SNPRINTF
+#cmakedefine HAVE_STAT
+#cmakedefine HAVE_STRCASECMP
+#cmakedefine HAVE_STRICMP
+#cmakedefine HAVE__STRICMP
+#cmakedefine HAVE_STRTOK_R
+#cmakedefine HAVE_VASPRINTF
+#cmakedefine HAVE_VSNPRINTF
+#cmakedefine HAVE__VSNPRINTF
+
+#cmakedefine HAVE___FUNCTION__
+
+#define SIZEOF_UNSIGNED_CHAR		@SIZEOF_UNSIGNED_CHAR@
+#define SIZEOF_UNSIGNED_SHORT		@SIZEOF_UNSIGNED_SHORT@
+#define SIZEOF_UNSIGNED_INT		@SIZEOF_UNSIGNED_INT@
+#define SIZEOF_UNSIGNED_LONG		@SIZEOF_UNSIGNED_LONG@
+#define SIZEOF_UNSIGNED_LONG_LONG	@SIZEOF_UNSIGNED_LONG_LONG@
+
+
+/* end raptor_config.h */
