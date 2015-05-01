@@ -30,3 +30,40 @@ configure_file(
   src/rasqal_config.h
   @ONLY
 )
+
+set(FLEX_MIN_VERSION 2.5.19)
+set(FLEX_REC_VERSION 2.5.36)
+
+find_package(FLEX ${FLEX_MIN_VERSION} REQUIRED)
+
+execute_process(COMMAND ${FLEX_EXECUTABLE} --version OUTPUT_VARIABLE FLEX_VERSION_DEC)
+string(REGEX REPLACE "[\\w]* ([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\1" FLEX_VERSION_DEC1 ${FLEX_VERSION_DEC})
+string(REGEX REPLACE "[\\w]* ([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\2" FLEX_VERSION_DEC2 ${FLEX_VERSION_DEC})
+string(REGEX REPLACE "[\\w]* ([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\3" FLEX_VERSION_DEC3 ${FLEX_VERSION_DEC})
+MATH(EXPR FLEX_VERSION_DECIMAL "${FLEX_VERSION_DEC1} * 10000 + ${FLEX_VERSION_DEC2} * 100 + ${FLEX_VERSION_DEC3}")
+
+message(STATUS "
+################################################################
+Rasqal Configuration Summary
+################################################################
+
+    http://librdf.org/rasqal/
+
+    Configured on host $ENV{COMPUTERNAME} ${HOSTNAME}
+      host OS                   ${CMAKE_SYSTEM_NAME}
+      host architecture         ${CMAKE_SYSTEM_PROCESSOR}
+
+    General flags:
+      CC                        ${CMAKE_C_COMPILER}
+      CXX (not used)            ${CMAKE_CXX_COMPILER}
+      CFLAGS                    ${CMAKE_C_FLAGS}
+      CXXFLAGS                  ${CMAKE_CXX_FLAGS}
+      LDFLAGS                   ${CMAKE_EXE_LINKER_FLAGS}
+
+    Installation prefix:        ${CMAKE_INSTALL_PREFIX}
+
+    Dependencies (packages marked with *** are required):
+    "
+)
+
+message( "  *** Flex                        ${FLEX_EXECUTABLE}")
