@@ -68,6 +68,16 @@ CHECK_INCLUDE_FILE(math.h     HAVE_MATH_H)
 CHECK_INCLUDE_FILE(limits.h   HAVE_LIMITS_H)
 CHECK_INCLUDE_FILE(float.h    HAVE_FLOAT_H)
 
+CHECK_INCLUDE_FILES("sys/time.h;time.h" TIME_WITH_SYS_TIME)
+
+set(RASQAL_LIBTOOL_VERSION "3:0:0")
+
+CHECK_FUNCTION_EXISTS(strcasecmp   HAVE_STRCASECMP)
+CHECK_FUNCTION_EXISTS(getopt       HAVE_GETOPT)
+CHECK_FUNCTION_EXISTS(timegm HAVE_TIMEGM)
+# Windows only version
+CHECK_FUNCTION_EXISTS(gettimeofday HAVE_GETTIMEOFDAY)
+
 message(STATUS "
 ################################################################
 Rasqal Configuration Summary
