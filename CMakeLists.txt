@@ -12,8 +12,8 @@ set(RASQAL_VERSION_MAJOR  0)
 set(RASQAL_VERSION_MINOR  9)
 set(RASQAL_VERSION_RELEASE  34)
 
-SET(VERSION "${RASQAL_VERSION_MAJOR}.${RASQAL_VERSION_MINOR}.${RASQAL_VERSION_RELEASE}")
-MATH(EXPR RASQAL_VERSION_DECIMAL "${RASQAL_VERSION_MAJOR} * 10000 + ${RASQAL_VERSION_MINOR} * 100 + ${RASQAL_VERSION_RELEASE}")
+set(VERSION "${RASQAL_VERSION_MAJOR}.${RASQAL_VERSION_MINOR}.${RASQAL_VERSION_RELEASE}")
+math(EXPR RASQAL_VERSION_DECIMAL "${RASQAL_VERSION_MAJOR} * 10000 + ${RASQAL_VERSION_MINOR} * 100 + ${RASQAL_VERSION_RELEASE}")
 
 project(Rasqal C)
 
@@ -42,15 +42,15 @@ execute_process(COMMAND ${FLEX_EXECUTABLE} --version OUTPUT_VARIABLE FLEX_VERSIO
 string(REGEX REPLACE "[\\w]* ([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\1" FLEX_VERSION_DEC1 ${FLEX_VERSION_DEC})
 string(REGEX REPLACE "[\\w]* ([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\2" FLEX_VERSION_DEC2 ${FLEX_VERSION_DEC})
 string(REGEX REPLACE "[\\w]* ([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\3" FLEX_VERSION_DEC3 ${FLEX_VERSION_DEC})
-MATH(EXPR FLEX_VERSION_DECIMAL "${FLEX_VERSION_DEC1} * 10000 + ${FLEX_VERSION_DEC2} * 100 + ${FLEX_VERSION_DEC3}")
+math(EXPR FLEX_VERSION_DECIMAL "${FLEX_VERSION_DEC1} * 10000 + ${FLEX_VERSION_DEC2} * 100 + ${FLEX_VERSION_DEC3}")
 
 # Recruit GNU Bison ver 3 or later (http://www.gnu.org/software/bison/)
 # Note: if you have Bison v<3 on your system and CMake finds it first, you will
 # have to pass -DBISON_EXECUTABLE=/path/to/bison-3.0 to CMake on the command line
-FIND_PACKAGE(BISON 3 REQUIRED)
+find_package(BISON 3 REQUIRED)
 
 # Recruit Perl 5
-FIND_PACKAGE(Perl 5 REQUIRED)
+find_package(Perl 5 REQUIRED)
 
 # Check standard headers
 CHECK_INCLUDE_FILE(errno.h    HAVE_ERRNO_H)
@@ -77,6 +77,8 @@ CHECK_FUNCTION_EXISTS(getopt       HAVE_GETOPT)
 CHECK_FUNCTION_EXISTS(timegm HAVE_TIMEGM)
 # Windows only version
 CHECK_FUNCTION_EXISTS(gettimeofday HAVE_GETTIMEOFDAY)
+
+
 
 message(STATUS "
 ################################################################
