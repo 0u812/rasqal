@@ -31,6 +31,8 @@ configure_file(
   @ONLY
 )
 
+# Recruit flex (http://flex.sourceforge.net/)
+
 set(FLEX_MIN_VERSION 2.5.19)
 set(FLEX_REC_VERSION 2.5.36)
 
@@ -41,6 +43,15 @@ string(REGEX REPLACE "[\\w]* ([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\1" FLEX_VERSION_
 string(REGEX REPLACE "[\\w]* ([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\2" FLEX_VERSION_DEC2 ${FLEX_VERSION_DEC})
 string(REGEX REPLACE "[\\w]* ([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\3" FLEX_VERSION_DEC3 ${FLEX_VERSION_DEC})
 MATH(EXPR FLEX_VERSION_DECIMAL "${FLEX_VERSION_DEC1} * 10000 + ${FLEX_VERSION_DEC2} * 100 + ${FLEX_VERSION_DEC3}")
+
+# Recruit GNU Bison ver 3 or later (http://www.gnu.org/software/bison/)
+# Note: if you have Bison v<3 on your system and CMake finds it first, you will
+# have to pass -DBISON_EXECUTABLE=/path/to/bison-3.0 to CMake on the command line
+FIND_PACKAGE(BISON 3 REQUIRED)
+
+# Recruit Perl 5
+FIND_PACKAGE(Perl 5 REQUIRED)
+
 
 message(STATUS "
 ################################################################
@@ -67,3 +78,5 @@ Rasqal Configuration Summary
 )
 
 message( "  *** Flex                        ${FLEX_EXECUTABLE}")
+message( "  *** Bison                       ${BISON_EXECUTABLE}")
+message( "  *** Perl                        ${PERL_EXECUTABLE}")
