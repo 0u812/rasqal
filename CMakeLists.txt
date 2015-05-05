@@ -17,6 +17,24 @@ math(EXPR RASQAL_VERSION_DECIMAL "${RASQAL_VERSION_MAJOR} * 10000 + ${RASQAL_VER
 
 project(Rasqal C)
 
+set(ENABLE_FULL_RPATH 1 CACHE BOOL "Full rpath in linking phase (makes lib paths hardcoded)")
+
+# http://www.cmake.org/Wiki/CMake_RPATH_handling
+if(ENABLE_FULL_RPATH)
+  set(CMAKE_SKIP_BUILD_RPATH  FALSE)
+
+  set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+
+  set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+
+  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+  list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
+  if("${isSystemDir}" STREQUAL "-1")
+    set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+  endif("${isSystemDir}" STREQUAL "-1")
+endif()
+
 # To include generated files
 set(CMAKE_INCLUDE_CURRENT_DIR 1)
 
@@ -78,7 +96,7 @@ CHECK_FUNCTION_EXISTS(timegm HAVE_TIMEGM)
 # Windows only version
 CHECK_FUNCTION_EXISTS(gettimeofday HAVE_GETTIMEOFDAY)
 
-
+find_package(Raptor2 2.0.7 REQUIRED)
 
 message(STATUS "
 ################################################################
