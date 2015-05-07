@@ -89,6 +89,17 @@ extern "C" {
 #cmakedefine RASQAL_DIGEST_GCRYPT
 #cmakedefine RASQAL_DIGEST_INTERNAL
 
+/** UUID library **/
+
+#cmakedefine RASQAL_UUID_LIBUUID
+#cmakedefine RASQAL_UUID_OSSP
+#cmakedefine RASQAL_UUID_INTERNAL
+
+/** Query languages **/
+
+#cmakedefine RASQAL_QUERY_LAQRS
+#cmakedefine RASQAL_QUERY_SPARQL
+
 /**
  * RASQAL_VERSION:
  *

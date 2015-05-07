@@ -196,6 +196,9 @@ else()
   set(WITH_LIBXML2 FALSE CACHE STRING "Enable features which require libxml2")
 endif()
 
+set(RASQAL_QUERY_LAQRS TRUE CACHE BOOL "Enable support for LAQRS queries")
+set(RASQAL_QUERY_SPARQL TRUE CACHE BOOL "Enable support for SPARQL queries")
+
 configure_file(
   src/rasqal_config_cmake.h.in
   src/rasqal_config.h
@@ -224,6 +227,11 @@ Rasqal Configuration Summary
       LDFLAGS                   ${CMAKE_EXE_LINKER_FLAGS}
 
     Installation prefix:        ${CMAKE_INSTALL_PREFIX}
+
+    Query languages:
+
+      LAQRS.........${RASQAL_QUERY_LAQRS}
+      SPARQL........${RASQAL_QUERY_SPARQL}
 
     Dependencies (packages marked with *** are required):
     "
