@@ -185,6 +185,17 @@ else()
   set(RASQAL_UUID_INTERNAL TRUE)
 endif()
 
+# ** libxml2 **
+
+find_package(LibXml2 2.6.8)
+
+if(LIBXML2_FOUND)
+  set(WITH_LIBXML2 TRUE CACHE STRING "Enable features which require libxml2")
+  add_definitions(${LIBXML2_DEFINITIONS})
+else()
+  set(WITH_LIBXML2 FALSE CACHE STRING "Enable features which require libxml2")
+endif()
+
 configure_file(
   src/rasqal_config_cmake.h.in
   src/rasqal_config.h
@@ -236,4 +247,8 @@ endif()
 if(RASQAL_UUID_OSSP)
   message( "  *** ossp-uuid                   ${OSSPUUID_LIBRARIES}")
   message( "  *** ossp-uuid includes          ${OSSPUUID_INCLUDE_DIR}")
+endif()
+if(WITH_LIBXML2)
+  message( "  *** libxml2                     ${LIBXML2_LIBRARIES}")
+  message( "  *** libxml2 includes            ${LIBXML2_INCLUDE_DIR}")
 endif()
