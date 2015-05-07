@@ -222,6 +222,10 @@ endif()
 set(RASQAL_QUERY_LAQRS TRUE CACHE BOOL "Enable support for LAQRS queries")
 set(RASQAL_QUERY_SPARQL TRUE CACHE BOOL "Enable support for SPARQL queries")
 
+# ** GMP **
+
+find_package(GMP)
+
 configure_file(
   src/rasqal_config_cmake.h.in
   src/rasqal_config.h
@@ -263,7 +267,7 @@ Rasqal Configuration Summary
 message( "  *** Flex                        ${FLEX_EXECUTABLE}")
 message( "  *** Bison                       ${BISON_EXECUTABLE}")
 message( "  *** Perl                        ${PERL_EXECUTABLE}")
-message( "    * Jing                        ${JING}")
+message( "  *   Jing                        ${JING}")
 message( "  *** Raptor                      ${RAPTOR_LOCATION}")
 message( "  *** Raptor includes             ${Raptor2_INCLUDE_DIR}")
 message( "    - Using PCRE?                 ${WITH_PCRE}")
@@ -281,6 +285,10 @@ if(RASQAL_UUID_OSSP)
   message( "    *** ossp-uuid includes          ${OSSPUUID_INCLUDE_DIR}")
 endif()
 if(WITH_LIBXML2)
-  message( "    * libxml2                     ${LIBXML2_LIBRARIES}")
-  message( "    * libxml2 includes            ${LIBXML2_INCLUDE_DIR}")
+  message( "  *   libxml2                     ${LIBXML2_LIBRARIES}")
+  message( "  *   libxml2 includes            ${LIBXML2_INCLUDE_DIR}")
+endif()
+if(GMP_FOUND)
+  message( "  *   GMP                         ${GMP_LIBRARY}")
+  message( "  *   GMP includes                ${GMP_INCLUDE_DIR}")
 endif()
