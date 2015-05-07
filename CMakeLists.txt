@@ -139,6 +139,7 @@ find_package(PCRE 3.9)
 if(PCRE_FOUND)
   set(WITH_PCRE TRUE CACHE BOOL "Enable features which use Perl-compatible regular expressions")
   set(RASQAL_REGEX_PCRE TRUE)
+  include_directories(${PCRE_INCLUDE_DIR})
 else()
   set(WITH_PCRE FALSE CACHE BOOL "Enable features which use Perl-compatible regular expressions")
 endif()
@@ -153,8 +154,10 @@ find_package(GCrypt)
 
 if(MHASH_FOUND)
   set(RASQAL_DIGEST_MHASH TRUE)
+  include_directories(${MHASH_INCLUDE_DIR})
 elseif(GCRYPT_FOUND)
   set(RASQAL_DIGEST_GCRYPT TRUE)
+  include_directories(${GCRYPT_INCLUDE_DIRS})
 else()
   set(RASQAL_DIGEST_INTERNAL TRUE)
 endif()
@@ -164,6 +167,8 @@ configure_file(
   src/rasqal_config.h
   @ONLY
 )
+
+# ** UUID libraries **
 
 
 message(STATUS "
