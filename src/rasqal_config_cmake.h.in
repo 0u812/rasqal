@@ -83,6 +83,11 @@ extern "C" {
 
 #cmakedefine RASQAL_REGEX_PCRE
 
+/** Digest library **/
+
+#cmakedefine RASQAL_DIGEST_MHASH
+#cmakedefine RASQAL_DIGEST_GCRYPT
+#cmakedefine RASQAL_DIGEST_INTERNAL
 
 /**
  * RASQAL_VERSION:
