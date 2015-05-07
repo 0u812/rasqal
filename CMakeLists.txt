@@ -8,6 +8,9 @@
 
 cmake_minimum_required(VERSION 3.2)
 
+# Path to find-modules
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+
 set(RASQAL_VERSION_MAJOR  0)
 set(RASQAL_VERSION_MINOR  9)
 set(RASQAL_VERSION_RELEASE  34)
@@ -48,6 +51,8 @@ configure_file(
   src/rasqal_config.h
   @ONLY
 )
+
+# ** Flex/Bison **
 
 # Recruit flex (http://flex.sourceforge.net/)
 
@@ -103,16 +108,28 @@ CHECK_FUNCTION_EXISTS(gettimeofday HAVE_GETTIMEOFDAY)
 # Set to true when Raptor and Rasqal are being built together
 set(IMPORT_RAPTOR_TARGET FALSE)
 
+# ** Raptor **
 # Import raptor as a target
-find_package(Raptor2 2.0.7 REQUIRED)
+find_package(Raptor2 2.0.15 REQUIRED CONFIG)
 
 # For diagnostics only
 get_property(RAPTOR_LOCATION TARGET raptor2 PROPERTY LOCATION)
+
+# ** Jing **
 
 find_program(JING jing)
 if(NOT JING STREQUAL "JING-NOTFOUND")
   set(HAVE_JING TRUE)
 endif(NOT JING STREQUAL "JING-NOTFOUND")
+
+# ** PCRE **
+find_package(PCRE)
+
+if(PCRE_FOUND)
+  set(WITH_PCRE TRUE CACHE BOOL "Enable features which use Perl-compatible regular expressions")
+else()
+  set(WITH_PCRE FALSE CACHE BOOL "Enable features which use Perl-compatible regular expressions")
+endif()
 
 message(STATUS "
 ################################################################
@@ -144,3 +161,8 @@ message( "  *** Perl                        ${PERL_EXECUTABLE}")
 message( "    * Jing                        ${JING}")
 message( "  *** Raptor                      ${RAPTOR_LOCATION}")
 message( "  *** Raptor includes             ${Raptor2_INCLUDE_DIR}")
+message( "    * Using PCRE?                 ${WITH_PCRE}")
+if(WITH_PCRE)
+  message( "    *** PCRE libs                   ${PCRE_LIBRARIES}")
+  message( "    *** PCRE includes               ${PCRE_INCLUDE_DIR}")
+endif()
