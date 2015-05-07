@@ -123,6 +123,8 @@ set(IMPORT_RAPTOR_TARGET FALSE)
 # Import raptor as a target
 find_package(Raptor2 2.0.15 REQUIRED CONFIG)
 
+mark_as_advanced(Raptor2_DIR)
+
 # For diagnostics only
 get_property(RAPTOR_LOCATION TARGET raptor2 PROPERTY LOCATION)
 
@@ -132,6 +134,8 @@ find_program(JING jing)
 if(NOT JING STREQUAL "JING-NOTFOUND")
   set(HAVE_JING TRUE)
 endif(NOT JING STREQUAL "JING-NOTFOUND")
+
+mark_as_advanced(JING)
 
 # ** PCRE **
 find_package(PCRE 3.9)
@@ -152,16 +156,23 @@ find_package(MHASH)
 
 find_package(GCrypt)
 
-set(WITH_DIGEST_LIBRARY CACHE STRING "Which digest library to use (mhash|gcrypt)")
-
 if(MHASH_FOUND AND (NOT WITH_DIGEST_LIBRARY OR WITH_DIGEST_LIBRARY STREQUAL mhash))
+
   set(RASQAL_DIGEST_MHASH TRUE)
   include_directories(${MHASH_INCLUDE_DIR})
+  set(WITH_DIGEST_LIBRARY "mhash" CACHE STRING "Which digest library to use (mhash|gcrypt|internal)")
+
 elseif(GCRYPT_FOUND AND (NOT WITH_DIGEST_LIBRARY OR WITH_DIGEST_LIBRARY STREQUAL gcrypt))
+
   set(RASQAL_DIGEST_GCRYPT TRUE)
   include_directories(${GCRYPT_INCLUDE_DIRS})
+  set(WITH_DIGEST_LIBRARY "gcrypt" CACHE STRING "Which digest library to use (mhash|gcrypt|internal)")
+
 else()
+
   set(RASQAL_DIGEST_INTERNAL TRUE)
+  set(WITH_DIGEST_LIBRARY "internal" CACHE STRING "Which digest library to use (mhash|gcrypt|internal)")
+
 endif()
 
 # ** UUID library **
@@ -173,16 +184,23 @@ find_package(OSSPUUID)
 
 # TODO: check for UUID in libc
 
-set(WITH_UUID_LIBRARY CACHE STRING "Which uuid library to use (libuuid|ossp)")
-
 if(UUID_FOUND AND (NOT WITH_UUID_LIBRARY OR WITH_UUID_LIBRARY STREQUAL libuuid))
+
   set(RASQAL_UUID_LIBUUID TRUE)
   include_directories(${UUID_INCLUDE_DIR})
+  set(WITH_UUID_LIBRARY "libuuid" CACHE STRING "Which uuid library to use (libuuid|ossp|internal)")
+
 elseif(OSSPUUID_FOUND AND (NOT WITH_UUID_LIBRARY OR WITH_UUID_LIBRARY STREQUAL ossp))
+
   set(RASQAL_UUID_OSSP TRUE)
   include_directories(${OSSPUUID_INCLUDE_DIR})
+  set(WITH_UUID_LIBRARY "ossp" CACHE STRING "Which uuid library to use (libuuid|ossp|internal)")
+
 else()
+
   set(RASQAL_UUID_INTERNAL TRUE)
+  set(WITH_UUID_LIBRARY "internal" CACHE STRING "Which uuid library to use (libuuid|ossp|internal)")
+
 endif()
 
 # ** libxml2 **

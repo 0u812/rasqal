@@ -8,6 +8,7 @@
 # UUID_LIBRARIES - Link these to use UUID
 # UUID_DEFINITIONS - Compiler switches required for using UUID
 #
+# Copyright (c) 2015 J Kyle Medley, github.com/0u812
 # Copyright (c) 2006 Andreas Schneider <mail@cynapses.org>
 #
 # Redistribution and use is allowed according to the terms of the New
@@ -110,6 +111,6 @@ endif (UUID_FIND_REQUIRED)
 endif (UUID_FOUND)
 
 # show the UUID_INCLUDE_DIRS and UUID_LIBRARIES variables only in the advanced view
-mark_as_advanced(UUID_INCLUDE_DIRS UUID_LIBRARIES)
+mark_as_advanced(UUID_INCLUDE_DIRS UUID_LIBRARIES UUID_INCLUDE_DIR UUID_LIBRARY UUID_LIBRARY_DEBUG)
 
 endif (UUID_LIBRARIES AND UUID_INCLUDE_DIRS)

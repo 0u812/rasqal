@@ -26,6 +26,8 @@ if(PCRE_CONFIG)
   execute_process(COMMAND ${PCRE_CONFIG} --version OUTPUT_VARIABLE PCRE_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
 endif()
 
+mark_as_advanced(PCRE_CONFIG)
+
 if (NOT WIN32)
   # use pkg-config to get the directories and then use these values
   # in the FIND_PATH() and FIND_LIBRARY() calls

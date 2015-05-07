@@ -37,6 +37,8 @@ if(OSSPUUID_CONFIG)
     if(${libname}_LIBRARY)
       list(APPEND OSSPUUID_LIBRARIES ${${libname}_LIBRARY})
     endif()
+
+    mark_as_advanced(${libname}_LIBRARY)
   endforeach()
 
 else()
@@ -71,5 +73,5 @@ else()
     REQUIRED_VARS OSSPUUID_INCLUDE_DIR OSSPUUID_LIBRARIES )
 endif()
 
-mark_as_advanced(OSSPUUID_INCLUDE_DIR OSSPUUID_LIBRARIES OSSPUUID_LIBRARIES)
+mark_as_advanced(OSSPUUID_INCLUDE_DIR OSSPUUID_LIBRARIES OSSPUUID_LIBRARIES OSSPUUID_CONFIG)
 
