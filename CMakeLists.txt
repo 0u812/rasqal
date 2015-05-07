@@ -46,12 +46,6 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/src/rasqal_general.c")
   error(FATAL "src/rasqal_general.c not found within source directory - wrong source path specified?")
 endif()
 
-configure_file(
-  src/rasqal_config_cmake.h.in
-  src/rasqal_config.h
-  @ONLY
-)
-
 # ** Flex/Bison **
 
 # Recruit flex (http://flex.sourceforge.net/)
@@ -127,11 +121,19 @@ find_package(PCRE 3.9)
 
 if(PCRE_FOUND)
   set(WITH_PCRE TRUE CACHE BOOL "Enable features which use Perl-compatible regular expressions")
+  set(RASQAL_REGEX_PCRE TRUE)
 else()
   set(WITH_PCRE FALSE CACHE BOOL "Enable features which use Perl-compatible regular expressions")
 endif()
 
-# NOTE: HAVE_REGEX_POSIX does not appear to be used in the code - don't bother to check it
+# NOTE: CMake build system currently does not support use of POSIX regex library
+
+configure_file(
+  src/rasqal_config_cmake.h.in
+  src/rasqal_config.h
+  @ONLY
+)
+
 
 message(STATUS "
 ################################################################
