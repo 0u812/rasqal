@@ -144,7 +144,7 @@ else()
   set(WITH_PCRE FALSE CACHE BOOL "Enable features which use Perl-compatible regular expressions")
 endif()
 
-# NOTE: CMake build system currently does not support use of POSIX regex library
+# TODO: Add support for using posix regex library?
 
 # ** Digest library **
 
@@ -152,10 +152,12 @@ find_package(MHASH)
 
 find_package(GCrypt)
 
-if(MHASH_FOUND)
+set(WITH_DIGEST_LIBRARY CACHE STRING "Which digest library to use (mhash|gcrypt)")
+
+if(MHASH_FOUND AND (NOT WITH_DIGEST_LIBRARY OR WITH_DIGEST_LIBRARY STREQUAL mhash))
   set(RASQAL_DIGEST_MHASH TRUE)
   include_directories(${MHASH_INCLUDE_DIR})
-elseif(GCRYPT_FOUND)
+elseif(GCRYPT_FOUND AND (NOT WITH_DIGEST_LIBRARY OR WITH_DIGEST_LIBRARY STREQUAL gcrypt))
   set(RASQAL_DIGEST_GCRYPT TRUE)
   include_directories(${GCRYPT_INCLUDE_DIRS})
 else()
@@ -168,6 +170,20 @@ find_package(UUID)
 
 # OSSP UUID
 find_package(OSSPUUID)
+
+# TODO: check for UUID in libc
+
+set(WITH_UUID_LIBRARY CACHE STRING "Which uuid library to use (libuuid|ossp)")
+
+if(UUID_FOUND AND (NOT WITH_UUID_LIBRARY OR WITH_UUID_LIBRARY STREQUAL libuuid))
+  set(RASQAL_UUID_LIBUUID TRUE)
+  include_directories(${UUID_INCLUDE_DIR})
+elseif(OSSPUUID_FOUND AND (NOT WITH_UUID_LIBRARY OR WITH_UUID_LIBRARY STREQUAL ossp))
+  set(RASQAL_UUID_OSSP TRUE)
+  include_directories(${OSSPUUID_INCLUDE_DIR})
+else()
+  set(RASQAL_UUID_INTERNAL TRUE)
+endif()
 
 configure_file(
   src/rasqal_config_cmake.h.in
@@ -213,7 +229,11 @@ if(WITH_PCRE)
   message( "    *** PCRE libs                   ${PCRE_LIBRARIES}")
   message( "    *** PCRE includes               ${PCRE_INCLUDE_DIR}")
 endif()
-if(UUID_FOUND)
-  message( "    * uuid                        ${UUID_LIBRARIES}")
-  message( "    * uuid includes               ${UUID_INCLUDE_DIRS}")
+if(RASQAL_UUID_LIBUUID)
+  message( "  *** libuuid                     ${UUID_LIBRARIES}")
+  message( "  *** libuuid includes            ${UUID_INCLUDE_DIRS}")
+endif()
+if(RASQAL_UUID_OSSP)
+  message( "  *** ossp-uuid                   ${OSSPUUID_LIBRARIES}")
+  message( "  *** ossp-uuid includes          ${OSSPUUID_INCLUDE_DIR}")
 endif()
