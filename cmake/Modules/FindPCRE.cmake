@@ -7,6 +7,7 @@
 # PCRE_INCLUDE_DIR - the PCRE include directory
 # PCRE_LIBRARIES - The libraries needed to use PCRE
 # PCRE_VERSION - The version of PCRE
+# PCRE_FLAGS   - Defined if pcre-config is available, missing otherwise
 #
 # Copyright (c) 2015, J Kyle Medley, github.com/0u812
 # Copyright (c) 2006, Alexander Neundorf, <neundorf@kde.org>
@@ -24,6 +25,7 @@ find_program(PCRE_CONFIG pcre-config)
 
 if(PCRE_CONFIG)
   execute_process(COMMAND ${PCRE_CONFIG} --version OUTPUT_VARIABLE PCRE_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+  execute_process(COMMAND ${PCRE_CONFIG} --cflags OUTPUT_VARIABLE PCRE_FLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
 endif()
 
 mark_as_advanced(PCRE_CONFIG)
