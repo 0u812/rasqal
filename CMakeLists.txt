@@ -226,6 +226,10 @@ set(RASQAL_QUERY_SPARQL TRUE CACHE BOOL "Enable support for SPARQL queries")
 
 find_package(GMP)
 
+# ** MPFR **
+
+find_package(MPFR 2.4.0)
+
 configure_file(
   src/rasqal_config_cmake.h.in
   src/rasqal_config.h
@@ -291,4 +295,8 @@ endif()
 if(GMP_FOUND)
   message( "  *   GMP                         ${GMP_LIBRARY}")
   message( "  *   GMP includes                ${GMP_INCLUDE_DIR}")
+endif()
+if(MPFR_FOUND)
+  message( "  *   MPFR                        ${MPFR_LIBRARIES}")
+  message( "  *   MPFR includes               ${MPFR_INCLUDES}")
 endif()
