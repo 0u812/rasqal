@@ -123,13 +123,15 @@ if(NOT JING STREQUAL "JING-NOTFOUND")
 endif(NOT JING STREQUAL "JING-NOTFOUND")
 
 # ** PCRE **
-find_package(PCRE)
+find_package(PCRE 3.9)
 
 if(PCRE_FOUND)
   set(WITH_PCRE TRUE CACHE BOOL "Enable features which use Perl-compatible regular expressions")
 else()
   set(WITH_PCRE FALSE CACHE BOOL "Enable features which use Perl-compatible regular expressions")
 endif()
+
+# NOTE: HAVE_REGEX_POSIX does not appear to be used in the code - don't bother to check it
 
 message(STATUS "
 ################################################################
