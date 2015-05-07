@@ -12,7 +12,7 @@
 # Copyright (c) 2006, Alexander Neundorf, <neundorf@kde.org>
 #
 # Redistribution and use is allowed according to the terms of the BSD license.
-# For details see the accompanying COPYING-CMAKE-SCRIPTS file.
+# For details see the COPYING-CMAKE-SCRIPTS file at https://code.google.com/p/opencollada.
 
 if (PCRE_INCLUDE_DIR AND PCRE_PCREPOSIX_LIBRARY AND PCRE_PCRE_LIBRARY)
   # Already in cache, be silent

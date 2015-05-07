@@ -162,6 +162,13 @@ else()
   set(RASQAL_DIGEST_INTERNAL TRUE)
 endif()
 
+# ** UUID library **
+
+find_package(UUID)
+
+# OSSP UUID
+find_package(OSSPUUID)
+
 configure_file(
   src/rasqal_config_cmake.h.in
   src/rasqal_config.h
@@ -205,4 +212,8 @@ message( "    * Using PCRE?                 ${WITH_PCRE}")
 if(WITH_PCRE)
   message( "    *** PCRE libs                   ${PCRE_LIBRARIES}")
   message( "    *** PCRE includes               ${PCRE_INCLUDE_DIR}")
+endif()
+if(UUID_FOUND)
+  message( "    * uuid                        ${UUID_LIBRARIES}")
+  message( "    * uuid includes               ${UUID_INCLUDE_DIRS}")
 endif()
