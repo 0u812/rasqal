@@ -70,6 +70,10 @@ find_package(BISON 3 REQUIRED)
 # Recruit Perl 5
 find_package(Perl 5 REQUIRED)
 
+include(CheckIncludeFile)
+include(CheckIncludeFiles)
+include(CheckFunctionExists)
+
 # Check standard headers
 CHECK_INCLUDE_FILE(errno.h    HAVE_ERRNO_H)
 CHECK_INCLUDE_FILE(stddef.h   HAVE_STDDEF_H)
@@ -96,7 +100,19 @@ CHECK_FUNCTION_EXISTS(timegm HAVE_TIMEGM)
 # Windows only version
 CHECK_FUNCTION_EXISTS(gettimeofday HAVE_GETTIMEOFDAY)
 
+# Set to true when Raptor and Rasqal are being built together
+set(IMPORT_RAPTOR_TARGET FALSE)
+
+# Import raptor as a target
 find_package(Raptor2 2.0.7 REQUIRED)
+
+# For diagnostics only
+get_property(RAPTOR_LOCATION TARGET raptor2 PROPERTY LOCATION)
+
+find_program(JING jing)
+if(NOT JING STREQUAL "JING-NOTFOUND")
+  set(HAVE_JING TRUE)
+endif(NOT JING STREQUAL "JING-NOTFOUND")
 
 message(STATUS "
 ################################################################
@@ -125,3 +141,6 @@ Rasqal Configuration Summary
 message( "  *** Flex                        ${FLEX_EXECUTABLE}")
 message( "  *** Bison                       ${BISON_EXECUTABLE}")
 message( "  *** Perl                        ${PERL_EXECUTABLE}")
+message( "    * Jing                        ${JING}")
+message( "  *** Raptor                      ${RAPTOR_LOCATION}")
+message( "  *** Raptor includes             ${Raptor2_INCLUDE_DIR}")
