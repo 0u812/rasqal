@@ -35,7 +35,11 @@ math(EXPR RASQAL_VERSION_DECIMAL "${RASQAL_VERSION_MAJOR} * 10000 + ${RASQAL_VER
 
 project(Rasqal C)
 
+enable_testing()
+
 set(RASQAL_CROSS_COMPILE CACHE BOOL "Should be set to true when performing a cross-compilation")
+
+set(RASQAL_CORE_INCLUDES "")
 
 # Must define for Rasqal source build
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRASQAL_INTERNAL=1")
@@ -175,6 +179,8 @@ set(IMPORT_RAPTOR_TARGET FALSE)
 # Import raptor as a target
 find_package(Raptor2 2.0.15 REQUIRED CONFIG)
 
+list(APPEND RASQAL_CORE_INCLUDES ${Raptor2_INCLUDE_DIR}/raptor2)
+
 mark_as_advanced(Raptor2_DIR)
 
 # For diagnostics only
@@ -195,7 +201,7 @@ find_package(PCRE 3.9)
 if(PCRE_FOUND)
   set(WITH_PCRE TRUE CACHE BOOL "Enable features which use Perl-compatible regular expressions")
   set(RASQAL_REGEX_PCRE TRUE)
-  include_directories(${PCRE_INCLUDE_DIR})
+  list(APPEND RASQAL_CORE_INCLUDES ${PCRE_INCLUDE_DIR})
   # Add flags if available
   if(PCRE_FLAGS)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${PCRE_FLAGS}")
@@ -246,14 +252,14 @@ find_package(OSSPUUID)
 if(UUID_FOUND AND (NOT WITH_UUID_LIBRARY OR WITH_UUID_LIBRARY STREQUAL libuuid))
 
   set(RASQAL_UUID_LIBUUID TRUE)
-  include_directories(${UUID_INCLUDE_DIR})
+  list(APPEND RASQAL_CORE_INCLUDES ${UUID_INCLUDE_DIR})
   set(RASQAL_EXTERNAL_LIBS "${RASQAL_EXTERNAL_LIBS} ${UUID_LIBRARIES}")
   set(WITH_UUID_LIBRARY "libuuid" CACHE STRING "Which uuid library to use (libuuid|ossp|internal)")
 
 elseif(OSSPUUID_FOUND AND (NOT WITH_UUID_LIBRARY OR WITH_UUID_LIBRARY STREQUAL ossp))
 
   set(RASQAL_UUID_OSSP TRUE)
-  include_directories(${OSSPUUID_INCLUDE_DIR})
+  list(APPEND RASQAL_CORE_INCLUDES ${OSSPUUID_INCLUDE_DIR})
   set(RASQAL_EXTERNAL_LIBS "${RASQAL_EXTERNAL_LIBS} ${OSSPUUID_LIBRARIES}")
   set(WITH_UUID_LIBRARY "ossp" CACHE STRING "Which uuid library to use (libuuid|ossp|internal)")
 
@@ -270,7 +276,7 @@ find_package(LibXml2 2.6.8)
 
 if(LIBXML2_FOUND)
   set(WITH_LIBXML2 TRUE CACHE STRING "Enable features which require libxml2")
-  include_directories(${LIBXML2_INCLUDE_DIR})
+  list(APPEND RASQAL_CORE_INCLUDES ${LIBXML2_INCLUDE_DIR})
   add_definitions(${LIBXML2_DEFINITIONS})
   set(RASQAL_EXTERNAL_LIBS "${RASQAL_EXTERNAL_LIBS} ${LIBXML2_LIBRARIES}")
 else()
@@ -287,7 +293,7 @@ set(RASQAL_QUERY_SPARQL TRUE CACHE BOOL "Enable support for SPARQL queries")
 find_package(GMP)
 
 if(GMP_FOUND)
-  include_directories(${GMP_INCLUDE_DIR})
+  list(APPEND RASQAL_CORE_INCLUDES ${GMP_INCLUDE_DIR})
   set(RASQAL_EXTERNAL_LIBS "${RASQAL_EXTERNAL_LIBS} ${GMP_LIBRARY}")
 endif()
 
@@ -298,7 +304,7 @@ find_package(MPFR 2.4.0)
 if(MPFR_FOUND AND (NOT WITH_DECIMAL_LIBRARY OR WITH_DECIMAL_LIBRARY STREQUAL mpfr))
 
   set(RASQAL_DECIMAL_MPFR TRUE)
-  include_directories(${MPFR_INCLUDES})
+  list(APPEND RASQAL_CORE_INCLUDES ${MPFR_INCLUDES})
   set(RASQAL_EXTERNAL_LIBS "${RASQAL_EXTERNAL_LIBS} ${MPFR_LIBRARIES}")
   set(WITH_DECIMAL_LIBRARY "mpfr" CACHE STRING "Which decimal library to use (mpfr|gmp|none)")
 
@@ -389,7 +395,7 @@ message( "  *** Bison                       ${BISON_EXECUTABLE}")
 message( "  *** Perl                        ${PERL_EXECUTABLE}")
 message( "  *   Jing                        ${JING}")
 message( "  *** Raptor                      ${RAPTOR_LOCATION}")
-message( "  *** Raptor includes             ${Raptor2_INCLUDE_DIR}")
+message( "  *** Raptor includes             ${Raptor2_INCLUDE_DIR}/raptor2")
 if(WITH_LIBXML2)
   message( "  *   libxml2                     ${LIBXML2_LIBRARIES}")
   message( "  *   libxml2 includes            ${LIBXML2_INCLUDE_DIR}")
