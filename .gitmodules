@@ -1,6 +1,6 @@
 [submodule "libmtwist"]
 	path = libmtwist
-	url = git://github.com/dajobe/libmtwist.git
+	url = git@github.com:0u812/libmtwist.git
 [submodule "libsv"]
 	path = libsv
 	url = git://github.com/dajobe/libsv.git
