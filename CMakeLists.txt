@@ -339,8 +339,6 @@ configure_file(
   @ONLY
 )
 
-# ** UUID libraries **
-
 
 message(STATUS "
 ################################################################
