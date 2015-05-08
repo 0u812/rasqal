@@ -96,9 +96,9 @@ extern "C" {
 #cmakedefine RASQAL_UUID_INTERNAL
 
 /** Decimal library **/
-#cmake define RASQAL_DECIMAL_MPFR
-#cmake define RASQAL_DECIMAL_GMP
-#cmake define RASQAL_DECIMAL_NONE
+#cmakedefine RASQAL_DECIMAL_MPFR
+#cmakedefine RASQAL_DECIMAL_GMP
+#cmakedefine RASQAL_DECIMAL_NONE
 
 /** Query languages **/
 
