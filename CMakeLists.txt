@@ -222,6 +222,8 @@ endif()
 set(RASQAL_QUERY_LAQRS TRUE CACHE BOOL "Enable support for LAQRS queries")
 set(RASQAL_QUERY_SPARQL TRUE CACHE BOOL "Enable support for SPARQL queries")
 
+# ** Decimal library **
+
 # ** GMP **
 
 find_package(GMP)
@@ -229,6 +231,25 @@ find_package(GMP)
 # ** MPFR **
 
 find_package(MPFR 2.4.0)
+
+if(MPFR_FOUND AND (NOT WITH_DECIMAL_LIBRARY OR WITH_DECIMAL_LIBRARY STREQUAL mpfr))
+
+  set(RASQAL_DECIMAL_MPFR TRUE)
+  include_directories(${MPFR_INCLUDES})
+  set(WITH_DECIMAL_LIBRARY "mpfr" CACHE STRING "Which decimal library to use (mpfr|gmp|none)")
+
+elseif(GMP_FOUND AND (NOT WITH_DECIMAL_LIBRARY OR WITH_DECIMAL_LIBRARY STREQUAL gmp))
+
+  set(RASQAL_DECIMAL_GMP TRUE)
+  include_directories(${GMP_INCLUDE_DIR})
+  set(WITH_DECIMAL_LIBRARY "gmp" CACHE STRING "Which decimal library to use (mpfr|gmp|none)")
+
+else()
+
+  set(RASQAL_DECIMAL_NONE TRUE)
+  set(WITH_DECIMAL_LIBRARY "none" CACHE STRING "Which decimal library to use (mpfr|gmp|none)")
+
+endif()
 
 configure_file(
   src/rasqal_config_cmake.h.in
@@ -274,12 +295,12 @@ message( "  *** Perl                        ${PERL_EXECUTABLE}")
 message( "  *   Jing                        ${JING}")
 message( "  *** Raptor                      ${RAPTOR_LOCATION}")
 message( "  *** Raptor includes             ${Raptor2_INCLUDE_DIR}")
-message( "    - Using PCRE?                 ${WITH_PCRE}")
+message( "  --- Using PCRE?                 ${WITH_PCRE}")
 if(WITH_PCRE)
   message( "    *** PCRE libs                   ${PCRE_LIBRARIES}")
   message( "    *** PCRE includes               ${PCRE_INCLUDE_DIR}")
 endif()
-message( "    - UUID library                ${WITH_UUID_LIBRARY}")
+message( "  --- UUID library                ${WITH_UUID_LIBRARY}")
 if(RASQAL_UUID_LIBUUID)
   message( "    *** libuuid                     ${UUID_LIBRARIES}")
   message( "    *** libuuid includes            ${UUID_INCLUDE_DIRS}")
@@ -292,11 +313,12 @@ if(WITH_LIBXML2)
   message( "  *   libxml2                     ${LIBXML2_LIBRARIES}")
   message( "  *   libxml2 includes            ${LIBXML2_INCLUDE_DIR}")
 endif()
-if(GMP_FOUND)
-  message( "  *   GMP                         ${GMP_LIBRARY}")
-  message( "  *   GMP includes                ${GMP_INCLUDE_DIR}")
+message( "  --- Decimal library             ${WITH_DECIMAL_LIBRARY}")
+if(RASQAL_DECIMAL_MPFR)
+  message( "    *** MPFR                        ${MPFR_LIBRARIES}")
+  message( "    *** MPFR includes               ${MPFR_INCLUDES}")
 endif()
-if(MPFR_FOUND)
-  message( "  *   MPFR                        ${MPFR_LIBRARIES}")
-  message( "  *   MPFR includes               ${MPFR_INCLUDES}")
+if(RASQAL_DECIMAL_GMP)
+  message( "    *** GMP                         ${GMP_LIBRARY}")
+  message( "    *** GMP includes                ${GMP_INCLUDE_DIR}")
 endif()
