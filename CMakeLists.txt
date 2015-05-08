@@ -362,6 +362,8 @@ configure_file(
 
 add_subdirectory(libsv)
 
+add_subdirectory(libmtwist)
+
 message(STATUS "
 ################################################################
 Rasqal Configuration Summary
