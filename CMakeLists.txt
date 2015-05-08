@@ -20,6 +20,8 @@ math(EXPR RASQAL_VERSION_DECIMAL "${RASQAL_VERSION_MAJOR} * 10000 + ${RASQAL_VER
 
 project(Rasqal C)
 
+set(RASQAL_CROSS_COMPILE CACHE BOOL "Should be set to true when performing a cross-compilation")
+
 set(ENABLE_FULL_RPATH 1 CACHE BOOL "Full rpath in linking phase (makes lib paths hardcoded)")
 
 # http://www.cmake.org/Wiki/CMake_RPATH_handling
@@ -91,12 +93,25 @@ CHECK_INCLUDE_FILE(float.h    HAVE_FLOAT_H)
 
 CHECK_INCLUDE_FILES("sys/time.h;time.h" TIME_WITH_SYS_TIME)
 
-set(RASQAL_LIBTOOL_VERSION "3:0:0")
+set (RASQAL_LIBTOOL_VERSION "3:0:0")
 
 CHECK_FUNCTION_EXISTS(random_r    HAVE_RANDOM_R)
 CHECK_FUNCTION_EXISTS(rand_r      HAVE_RAND_R)
 CHECK_FUNCTION_EXISTS(initstate   HAVE_INITSTATE)
 CHECK_FUNCTION_EXISTS(rand        HAVE_SRAND)
+
+set (CMAKE_REQUIRED_LIBRARIES m)
+CHECK_FUNCTION_EXISTS(ceil  HAVE_CEIL)
+CHECK_FUNCTION_EXISTS(floor HAVE_FLOOR)
+CHECK_FUNCTION_EXISTS(round HAVE_ROUND)
+
+if(NOT RASQAL_CROSS_COMPILE)
+  if(NOT HAVE_CEIL OR NOT HAVE_FLOOR OR NOT HAVE_ROUND)
+    message(FATAL_ERROR "Could not find ceil, floor, round in default libs")
+  endif()
+else()
+  message(WARNING "Could not find ceil, floor, round in default libs. Continuing with cross-compile.")
+endif()
 
 CHECK_FUNCTION_EXISTS(strcasecmp  HAVE_STRCASECMP)
 CHECK_FUNCTION_EXISTS(getopt      HAVE_GETOPT)
