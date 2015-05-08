@@ -360,6 +360,7 @@ configure_file(
   @ONLY
 )
 
+add_subdirectory(libsv)
 
 message(STATUS "
 ################################################################
