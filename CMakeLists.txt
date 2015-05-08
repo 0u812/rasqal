@@ -22,6 +22,17 @@ project(Rasqal C)
 
 set(RASQAL_CROSS_COMPILE CACHE BOOL "Should be set to true when performing a cross-compilation")
 
+# Must define for Rasqal source build
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRASQAL_INTERNAL=1")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRASQAL_INTERNAL=1")
+
+# Debug messages
+set(WITH_DEBUG_MESSAGES FALSE CACHE BOOL "Enable debug messages (default FALSE)")
+if(WITH_DEBUG_MESSAGES)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRASQAL_DEBUG=1")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRASQAL_DEBUG=1")
+endif()
+
 set(ENABLE_FULL_RPATH 1 CACHE BOOL "Full rpath in linking phase (makes lib paths hardcoded)")
 
 # http://www.cmake.org/Wiki/CMake_RPATH_handling
