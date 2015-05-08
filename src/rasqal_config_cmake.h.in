@@ -73,6 +73,11 @@ extern "C" {
 
 #cmakedefine HAVE___FUNCTION__
 
+#cmakedefine HAVE_RANDOM_R
+#cmakedefine HAVE_RAND_R
+#cmakedefine HAVE_INITSTATE
+#cmakedefine HAVE_SRAND
+
 #define SIZEOF_UNSIGNED_CHAR    @SIZEOF_UNSIGNED_CHAR@
 #define SIZEOF_UNSIGNED_SHORT   @SIZEOF_UNSIGNED_SHORT@
 #define SIZEOF_UNSIGNED_INT   @SIZEOF_UNSIGNED_INT@
@@ -104,6 +109,15 @@ extern "C" {
 
 #cmakedefine RASQAL_QUERY_LAQRS
 #cmakedefine RASQAL_QUERY_SPARQL
+
+/** Random/RNG methods: **/
+
+#cmakedefine RANDOM_ALGO_MTWIST
+#cmakedefine RANDOM_ALGO_GMP_RAND
+#cmakedefine RANDOM_ALGO_RANDOM_R
+#cmakedefine RANDOM_ALGO_RAND_R
+#cmakedefine RANDOM_ALGO_RANDOM
+#cmakedefine RANDOM_ALGO_RAND
 
 /**
  * RASQAL_VERSION:

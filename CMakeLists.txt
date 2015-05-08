@@ -93,6 +93,11 @@ CHECK_INCLUDE_FILES("sys/time.h;time.h" TIME_WITH_SYS_TIME)
 
 set(RASQAL_LIBTOOL_VERSION "3:0:0")
 
+CHECK_FUNCTION_EXISTS(random_r    HAVE_RANDOM_R)
+CHECK_FUNCTION_EXISTS(rand_r      HAVE_RAND_R)
+CHECK_FUNCTION_EXISTS(initstate   HAVE_INITSTATE)
+CHECK_FUNCTION_EXISTS(rand        HAVE_SRAND)
+
 CHECK_FUNCTION_EXISTS(strcasecmp  HAVE_STRCASECMP)
 CHECK_FUNCTION_EXISTS(getopt      HAVE_GETOPT)
 CHECK_FUNCTION_EXISTS(timegm      HAVE_TIMEGM)
@@ -249,6 +254,30 @@ else()
   set(RASQAL_DECIMAL_NONE TRUE)
   set(WITH_DECIMAL_LIBRARY "none" CACHE STRING "Which decimal library to use (mpfr|gmp|none)")
 
+endif()
+
+# ** Random approach **
+
+set(RANDOM_ALGO_MTWIST TRUE CACHE BOOL "RNG: Use internal Mersenne Twister")
+
+if(GMP_FOUND)
+  set(RANDOM_ALGO_GMP_RAND TRUE CACHE BOOL "RNG: Use GMP gmp_randseed_ui and mpz_urandomm()")
+endif()
+
+if(HAVE_RANDOM_R)
+  set(RANDOM_ALGO_RANDOM_R TRUE CACHE BOOL "RNG: Use glibc initstate_r() and random_r()")
+endif()
+
+if(HAVE_RAND_R)
+  set(RANDOM_ALGO_RAND_R TRUE CACHE BOOL "RNG: Use POSIX rand_r()")
+endif()
+
+if(HAVE_INITSTATE)
+  set(RANDOM_ALGO_RANDOM TRUE CACHE BOOL "RNG: Use BSD initstate() and random()")
+endif()
+
+if(HAVE_SRAND)
+  set(RANDOM_ALGO_RAND TRUE CACHE BOOL "RNG: Use POSIX srand() and rand()")
 endif()
 
 configure_file(
