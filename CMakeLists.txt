@@ -40,6 +40,9 @@ if(ENABLE_FULL_RPATH)
   endif("${isSystemDir}" STREQUAL "-1")
 endif()
 
+# External dependencies
+set(RASQAL_EXTERNAL_LIBS "")
+
 # To include generated files
 set(CMAKE_INCLUDE_CURRENT_DIR 1)
 
@@ -104,6 +107,7 @@ set (CMAKE_REQUIRED_LIBRARIES m)
 CHECK_FUNCTION_EXISTS(ceil  HAVE_CEIL)
 CHECK_FUNCTION_EXISTS(floor HAVE_FLOOR)
 CHECK_FUNCTION_EXISTS(round HAVE_ROUND)
+set(RASQAL_EXTERNAL_LIBS "${RASQAL_EXTERNAL_LIBS} m")
 
 if(NOT RASQAL_CROSS_COMPILE)
   if(NOT HAVE_CEIL OR NOT HAVE_FLOOR OR NOT HAVE_ROUND)
@@ -185,20 +189,22 @@ find_package(GCrypt)
 
 if(MHASH_FOUND AND (NOT WITH_DIGEST_LIBRARY OR WITH_DIGEST_LIBRARY STREQUAL mhash))
 
-  set(RASQAL_DIGEST_MHASH TRUE)
-  include_directories(${MHASH_INCLUDE_DIR})
-  set(WITH_DIGEST_LIBRARY "mhash" CACHE STRING "Which digest library to use (mhash|gcrypt|internal)")
+  set (RASQAL_DIGEST_MHASH TRUE)
+  include_directories (${MHASH_INCLUDE_DIR})
+  set (RASQAL_EXTERNAL_LIBS "${RASQAL_EXTERNAL_LIBS} ${MHASH_LIBRARIES}")
+  set (WITH_DIGEST_LIBRARY "mhash" CACHE STRING "Which digest library to use (mhash|gcrypt|internal)")
 
 elseif(GCRYPT_FOUND AND (NOT WITH_DIGEST_LIBRARY OR WITH_DIGEST_LIBRARY STREQUAL gcrypt))
 
-  set(RASQAL_DIGEST_GCRYPT TRUE)
-  include_directories(${GCRYPT_INCLUDE_DIRS})
-  set(WITH_DIGEST_LIBRARY "gcrypt" CACHE STRING "Which digest library to use (mhash|gcrypt|internal)")
+  set (RASQAL_DIGEST_GCRYPT TRUE)
+  include_directories (${GCRYPT_INCLUDE_DIRS})
+  set (RASQAL_EXTERNAL_LIBS "${RASQAL_EXTERNAL_LIBS} ${GCRYPT_LIBRARIES}")
+  set (WITH_DIGEST_LIBRARY "gcrypt" CACHE STRING "Which digest library to use (mhash|gcrypt|internal)")
 
 else()
 
-  set(RASQAL_DIGEST_INTERNAL TRUE)
-  set(WITH_DIGEST_LIBRARY "internal" CACHE STRING "Which digest library to use (mhash|gcrypt|internal)")
+  set (RASQAL_DIGEST_INTERNAL TRUE)
+  set (WITH_DIGEST_LIBRARY "internal" CACHE STRING "Which digest library to use (mhash|gcrypt|internal)")
 
 endif()
 
@@ -215,12 +221,14 @@ if(UUID_FOUND AND (NOT WITH_UUID_LIBRARY OR WITH_UUID_LIBRARY STREQUAL libuuid))
 
   set(RASQAL_UUID_LIBUUID TRUE)
   include_directories(${UUID_INCLUDE_DIR})
+  set(RASQAL_EXTERNAL_LIBS "${RASQAL_EXTERNAL_LIBS} ${UUID_LIBRARIES}")
   set(WITH_UUID_LIBRARY "libuuid" CACHE STRING "Which uuid library to use (libuuid|ossp|internal)")
 
 elseif(OSSPUUID_FOUND AND (NOT WITH_UUID_LIBRARY OR WITH_UUID_LIBRARY STREQUAL ossp))
 
   set(RASQAL_UUID_OSSP TRUE)
   include_directories(${OSSPUUID_INCLUDE_DIR})
+  set(RASQAL_EXTERNAL_LIBS "${RASQAL_EXTERNAL_LIBS} ${OSSPUUID_LIBRARIES}")
   set(WITH_UUID_LIBRARY "ossp" CACHE STRING "Which uuid library to use (libuuid|ossp|internal)")
 
 else()
@@ -236,7 +244,9 @@ find_package(LibXml2 2.6.8)
 
 if(LIBXML2_FOUND)
   set(WITH_LIBXML2 TRUE CACHE STRING "Enable features which require libxml2")
+  include_directories(${LIBXML2_INCLUDE_DIR})
   add_definitions(${LIBXML2_DEFINITIONS})
+  set(RASQAL_EXTERNAL_LIBS "${RASQAL_EXTERNAL_LIBS} ${LIBXML2_LIBRARIES}")
 else()
   set(WITH_LIBXML2 FALSE CACHE STRING "Enable features which require libxml2")
 endif()
@@ -250,6 +260,11 @@ set(RASQAL_QUERY_SPARQL TRUE CACHE BOOL "Enable support for SPARQL queries")
 
 find_package(GMP)
 
+if(GMP_FOUND)
+  include_directories(${GMP_INCLUDE_DIR})
+  set(RASQAL_EXTERNAL_LIBS "${RASQAL_EXTERNAL_LIBS} ${GMP_LIBRARY}")
+endif()
+
 # ** MPFR **
 
 find_package(MPFR 2.4.0)
@@ -258,12 +273,12 @@ if(MPFR_FOUND AND (NOT WITH_DECIMAL_LIBRARY OR WITH_DECIMAL_LIBRARY STREQUAL mpf
 
   set(RASQAL_DECIMAL_MPFR TRUE)
   include_directories(${MPFR_INCLUDES})
+  set(RASQAL_EXTERNAL_LIBS "${RASQAL_EXTERNAL_LIBS} ${MPFR_LIBRARIES}")
   set(WITH_DECIMAL_LIBRARY "mpfr" CACHE STRING "Which decimal library to use (mpfr|gmp|none)")
 
 elseif(GMP_FOUND AND (NOT WITH_DECIMAL_LIBRARY OR WITH_DECIMAL_LIBRARY STREQUAL gmp))
 
   set(RASQAL_DECIMAL_GMP TRUE)
-  include_directories(${GMP_INCLUDE_DIR})
   set(WITH_DECIMAL_LIBRARY "gmp" CACHE STRING "Which decimal library to use (mpfr|gmp|none)")
 
 else()
