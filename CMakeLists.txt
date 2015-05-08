@@ -280,6 +280,16 @@ if(HAVE_SRAND)
   set(RANDOM_ALGO_RAND TRUE CACHE BOOL "RNG: Use POSIX srand() and rand()")
 endif()
 
+if(
+  NOT RANDOM_ALGO_MTWIST AND
+  NOT RANDOM_ALGO_GMP_RAND AND
+  NOT RANDOM_ALGO_RANDOM_R AND
+  NOT RANDOM_ALGO_RAND_R AND
+  NOT RANDOM_ALGO_RANDOM AND
+  NOT RANDOM_ALGO_RAND)
+  message(FATAL_ERROR "No method found for random number generation. POSIX rand should always be available.")
+endif()
+
 configure_file(
   src/rasqal_config_cmake.h.in
   src/rasqal_config.h
