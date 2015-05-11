@@ -30,14 +30,18 @@ set(RASQAL_VERSION_MAJOR  0)
 set(RASQAL_VERSION_MINOR  9)
 set(RASQAL_VERSION_RELEASE  34)
 
-set(VERSION "${RASQAL_VERSION_MAJOR}.${RASQAL_VERSION_MINOR}.${RASQAL_VERSION_RELEASE}")
+set(RASQAL_VERSION "${RASQAL_VERSION_MAJOR}.${RASQAL_VERSION_MINOR}.${RASQAL_VERSION_RELEASE}")
 math(EXPR RASQAL_VERSION_DECIMAL "${RASQAL_VERSION_MAJOR} * 10000 + ${RASQAL_VERSION_MINOR} * 100 + ${RASQAL_VERSION_RELEASE}")
 
 project(Rasqal C)
 
 enable_testing()
 
-set(RASQAL_CROSS_COMPILE CACHE BOOL "Should be set to true when performing a cross-compilation")
+# Build shared/static?
+set(RASQAL_BUILD_SHARED_LIB TRUE  CACHE BOOL "Set to true when building a shared library")
+set(RASQAL_BUILD_STATIC_LIB FALSE CACHE BOOL "Set to true when building a static library")
+
+set(RASQAL_CROSS_COMPILE CACHE BOOL "Should be set to true when performing a cross-compilation (disables configuration-time checks which require compiling code)")
 
 set(RASQAL_CORE_INCLUDES "")
 

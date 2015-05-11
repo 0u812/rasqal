@@ -88,3 +88,31 @@ set(RASQAL_SOURCES ${RASQAL_SOURCES} git-version.h)
 set_source_files_properties(git-version.h PROPERTIES GENERATED TRUE)
 
 configure_file(git-version.h.in git-version.h @ONLY)
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DSV_CONFIG")
+
+if(RANDOM_ALGO_MTWIST)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DMTWIST_CONFIG")
+endif()
+
+# Build the Rasqal shared library
+if(RASQAL_BUILD_SHARED_LIB)
+  add_library(rasqal SHARED ${RASQAL_SOURCES})
+
+  target_link_libraries(rasqal ${RASQAL_EXTERNAL_LIBS})
+
+  set_target_properties (rasqal
+    PROPERTIES
+    VERSION ${RASQAL_VERSION})
+endif()
+
+# Build the Rasqal static library
+if(RASQAL_BUILD_STATIC_LIB)
+  add_library(rasqal-static SHARED ${RASQAL_SOURCES})
+
+  target_link_libraries(rasqal-static ${RASQAL_EXTERNAL_LIBS})
+
+  set_target_properties (rasqal-static
+    PROPERTIES
+    VERSION ${RASQAL_VERSION})
+endif()
