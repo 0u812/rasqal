@@ -59,8 +59,37 @@ set(RASQAL_SOURCES
   ssort.h)
 
 if(RASQAL_QUERY_SPARQL)
-  set(RASQAL_SOURCES ${RASQAL_SOURCES} sparql_lexer.c sparql_lexer.h
+  set(SPARQL_PARSER_SRC_FILES sparql_lexer.c sparql_lexer.h
     sparql_parser.c sparql_parser.h sparql_common.h)
+
+  set(RASQAL_SOURCES ${RASQAL_SOURCES} ${SPARQL_PARSER_SRC_FILES})
+
+  set_source_files_properties(${SPARQL_PARSER_SRC_FILES} PROPERTIES GENERATED TRUE)
+
+  # SPARQL lexer/parser generation
+
+  # Generate the SPARQL lexer
+  add_custom_target(sparql_flex_tgt DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/sparql_lexer.t)
+  add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/sparql_lexer.t
+    COMMAND ${FLEX_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/sparql_lexer.t ${CMAKE_CURRENT_SOURCE_DIR}/sparql_lexer.l
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/sparql_lexer.l)
+
+  add_custom_target(sparql_lexer_tgt DEPENDS sparql_flex_tgt)
+  add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/sparql_lexer.c
+    COMMAND ${PERL_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/fix-flex.pl ${CMAKE_CURRENT_BINARY_DIR}/sparql_lexer.t > ${CMAKE_CURRENT_BINARY_DIR}/sparql_lexer.c
+    DEPENDS sparql_flex_tgt)
+
+  # Generate the sparql parser
+  add_custom_target(sparql_tables_tgt DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/sparql_parser.tab.c)
+  add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/sparql_parser.tab.c
+    COMMAND ${BISON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/sparql_parser.y
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/sparql_parser.y)
+
+  add_custom_target(sparql_parser_tgt DEPENDS sparql_tables_tgt ${CMAKE_CURRENT_BINARY_DIR}/sparql_parser.c ${CMAKE_CURRENT_BINARY_DIR}/sparql_parser.h)
+  add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/sparql_parser.c
+    COMMAND ${PERL_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/fix-bison.pl ${CMAKE_CURRENT_BINARY_DIR}/sparql_parser.tab.c > ${CMAKE_CURRENT_BINARY_DIR}/sparql_parser.c
+    DEPENDS sparql_tables_tgt)
+  add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/sparql_parser.h COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_CURRENT_BINARY_DIR}/sparql_parser.tab.h ${CMAKE_CURRENT_BINARY_DIR}/sparql_parser.h)
 endif()
 
 if(STRCASECMP)
@@ -83,13 +112,19 @@ if(RASQAL_DIGEST_INTERNAL)
   set(RASQAL_SOURCES ${RASQAL_SOURCES} rasqal_digest_md5.c rasqal_digest_sha1.c)
 endif()
 
+# Git version info
+
 set(RASQAL_SOURCES ${RASQAL_SOURCES} git-version.h)
 
 set_source_files_properties(git-version.h PROPERTIES GENERATED TRUE)
 
 configure_file(git-version.h.in git-version.h @ONLY)
 
+# libsv
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DSV_CONFIG")
+
+# libmtwist
 
 if(RANDOM_ALGO_MTWIST)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DMTWIST_CONFIG")
