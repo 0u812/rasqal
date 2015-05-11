@@ -70,6 +70,15 @@ if(ENABLE_FULL_RPATH)
   endif("${isSystemDir}" STREQUAL "-1")
 endif()
 
+# Get the current git commit
+find_package(Git)
+if(GIT_FOUND)
+  # TODO: does not update automatically
+  execute_process(COMMAND ${GIT_EXECUTABLE} --git-dir=${CMAKE_CURRENT_SOURCE_DIR}/.git --work-tree=${CMAKE_CURRENT_SOURCE_DIR} rev-parse HEAD OUTPUT_VARIABLE RASQAL_GIT_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+else()
+  set(RASQAL_GIT_VERSION "unknown")
+endif()
+
 # External dependencies
 set(RASQAL_EXTERNAL_LIBS "")
 
@@ -364,6 +373,8 @@ add_subdirectory(libsv)
 
 add_subdirectory(libmtwist)
 
+add_subdirectory(src)
+
 message(STATUS "
 ################################################################
 Rasqal Configuration Summary
@@ -381,6 +392,8 @@ Rasqal Configuration Summary
       CFLAGS                    ${CMAKE_C_FLAGS}
       CXXFLAGS                  ${CMAKE_CXX_FLAGS}
       LDFLAGS                   ${CMAKE_EXE_LINKER_FLAGS}
+
+    Latest commit via Git:      ${RASQAL_GIT_VERSION}
 
     Installation prefix:        ${CMAKE_INSTALL_PREFIX}
 

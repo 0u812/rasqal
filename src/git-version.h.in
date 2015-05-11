@@ -1,0 +1,15 @@
+/**
+  This file is pre-processed by CMake to supply the sha sum
+  of the latest commit from git.
+
+  History:
+    * Created 05/11/2015
+      Author: Kyle Medley, 2015
+**/
+
+#ifndef RASQAL_GIT_VERSION_H
+#define RASQAL_GIT_VERSION_H
+
+#define GIT_VERSION @RASQAL_GIT_VERSION@
+
+#endif // RASQAL_GIT_VERSION_H
