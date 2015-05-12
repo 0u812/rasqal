@@ -373,6 +373,12 @@ configure_file(
   @ONLY
 )
 
+configure_file(
+  src/rasqal.h.in
+  src/rasqal.h
+  @ONLY
+)
+
 add_subdirectory(libsv)
 
 add_subdirectory(libmtwist)

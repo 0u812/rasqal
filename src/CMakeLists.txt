@@ -112,6 +112,8 @@ if(RASQAL_DIGEST_INTERNAL)
   set(RASQAL_SOURCES ${RASQAL_SOURCES} rasqal_digest_md5.c rasqal_digest_sha1.c)
 endif()
 
+include_directories(${RASQAL_CORE_INCLUDES})
+
 # Git version info
 
 set(RASQAL_SOURCES ${RASQAL_SOURCES} git-version.h)
