@@ -125,11 +125,13 @@ configure_file(git-version.h.in git-version.h @ONLY)
 # libsv
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DSV_CONFIG")
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../libsv)
 
 # libmtwist
 
 if(RANDOM_ALGO_MTWIST)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DMTWIST_CONFIG")
+  include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../libmtwist)
 endif()
 
 # Build the Rasqal shared library

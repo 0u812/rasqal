@@ -41,6 +41,7 @@
 #cmakedefine HAVE_STDDEF_H
 #cmakedefine HAVE_STDLIB_H
 #cmakedefine HAVE_STRING_H
+#cmakedefine HAVE_STRINGS_H
 #cmakedefine HAVE_UNISTD_H
 #cmakedefine HAVE_SYS_PARAM_H
 #cmakedefine HAVE_SYS_STAT_H
