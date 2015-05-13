@@ -35,6 +35,7 @@
 #cmakedefine HAVE_FCNTL_H
 #cmakedefine HAVE_GETOPT_H
 #cmakedefine HAVE_LIMITS_H
+#cmakedefine HAVE_FLOAT_H
 #cmakedefine HAVE_MATH_H
 #cmakedefine HAVE_SETJMP_H
 #cmakedefine HAVE_STDDEF_H
