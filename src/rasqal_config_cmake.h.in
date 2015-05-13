@@ -91,6 +91,8 @@
 #cmakedefine RASQAL_DIGEST_GCRYPT
 #cmakedefine RASQAL_DIGEST_INTERNAL
 
+#cmakedefine HAVE_GCRYPT_H
+
 /** UUID library **/
 
 #cmakedefine RASQAL_UUID_LIBUUID

@@ -232,6 +232,10 @@ find_package(MHASH)
 
 find_package(GCrypt)
 
+if(GCRYPT_FOUND)
+  set(HAVE_GCRYPT_H TRUE) # Should always be true when gcrypt is found
+endif()
+
 if(MHASH_FOUND AND (NOT WITH_DIGEST_LIBRARY OR WITH_DIGEST_LIBRARY STREQUAL mhash))
 
   set (RASQAL_DIGEST_MHASH TRUE)
