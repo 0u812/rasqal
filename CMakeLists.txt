@@ -376,6 +376,9 @@ if(
   message(FATAL_ERROR "No method found for random number generation. POSIX rand should always be available.")
 endif()
 
+# Strip leading/trailing whitespace from RASQAL_EXTERNAL_LIBS
+string(STRIP ${RASQAL_EXTERNAL_LIBS} RASQAL_EXTERNAL_LIBS)
+
 # Required to use rasqal_config.h
 add_definitions(-DHAVE_CONFIG_H=1)
 
