@@ -101,6 +101,9 @@
 #cmakedefine RASQAL_DECIMAL_GMP
 #cmakedefine RASQAL_DECIMAL_NONE
 
+#cmakedefine HAVE_MPFR_H
+#cmakedefine HAVE_GMP_H
+
 /** Query languages **/
 
 #cmakedefine RASQAL_QUERY_LAQRS
