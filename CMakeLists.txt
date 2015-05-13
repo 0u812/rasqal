@@ -367,6 +367,9 @@ if(
   message(FATAL_ERROR "No method found for random number generation. POSIX rand should always be available.")
 endif()
 
+# Required to use rasqal_config.h
+add_definitions(-DHAVE_CONFIG_H=1)
+
 configure_file(
   src/rasqal_config_cmake.h.in
   src/rasqal_config.h
