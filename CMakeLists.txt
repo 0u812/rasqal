@@ -396,6 +396,12 @@ configure_file(
 
 add_subdirectory(libsv)
 
+# Required to use mtwist_config.h
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
+ADD_DEFINITIONS(-DMTWIST_CONFIG)
+# Required to use rasqal_config.h
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/src)
+
 add_subdirectory(libmtwist)
 
 add_subdirectory(src)
