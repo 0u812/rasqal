@@ -138,7 +138,10 @@ endif()
 if(RASQAL_BUILD_SHARED_LIB)
   add_library(rasqal SHARED ${RASQAL_SOURCES})
 
-  target_link_libraries(rasqal raptor2 ${RASQAL_EXTERNAL_LIBS})
+  target_link_libraries(rasqal raptor2 sv ${RASQAL_EXTERNAL_LIBS})
+  if(RANDOM_ALGO_MTWIST)
+    target_link_libraries(rasqal mtwist)
+  endif()
 
   set_target_properties (rasqal
     PROPERTIES
