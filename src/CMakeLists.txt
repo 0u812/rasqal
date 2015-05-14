@@ -69,7 +69,7 @@ if(RASQAL_QUERY_SPARQL)
   # SPARQL lexer/parser generation
 
   # Generate the SPARQL lexer
-  add_custom_target(sparql_flex_tgt DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/sparql_lexer.t)
+  add_custom_target(sparql_flex_tgt DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/sparql_lexer.l)
   add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/sparql_lexer.t
     COMMAND ${FLEX_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/sparql_lexer.t ${CMAKE_CURRENT_SOURCE_DIR}/sparql_lexer.l
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/sparql_lexer.l)
@@ -80,7 +80,7 @@ if(RASQAL_QUERY_SPARQL)
     DEPENDS sparql_flex_tgt)
 
   # Generate the sparql parser
-  add_custom_target(sparql_tables_tgt DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/sparql_parser.tab.c)
+  add_custom_target(sparql_tables_tgt DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/sparql_parser.y)
   add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/sparql_parser.tab.c
     COMMAND ${BISON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/sparql_parser.y
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/sparql_parser.y)
