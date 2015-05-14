@@ -155,3 +155,12 @@ if(RASQAL_BUILD_STATIC_LIB)
     PROPERTIES
     VERSION ${RASQAL_VERSION})
 endif()
+
+# ** Tests ** ------------------------------
+
+if(RASQAL_QUERY_SPARQL)
+  add_executable(sparql_lexer_test sparql_lexer.c)
+  add_test(NAME sparql_lexer_test COMMAND sparql_lexer_test)
+  set_target_properties(sparql_lexer_test PROPERTIES COMPILE_FLAGS "-DSTANDALONE")
+  target_link_libraries(sparql_lexer_test rasqal)
+endif()
