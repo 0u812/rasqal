@@ -53,6 +53,7 @@
 #cmakedefine HAVE_ACCESS
 #cmakedefine HAVE__ACCESS
 #cmakedefine HAVE_GETOPT
+#cmakedefine HAVE_TIMEGM
 #cmakedefine HAVE_GETOPT_LONG
 #cmakedefine HAVE_GETTIMEOFDAY
 #cmakedefine HAVE_ISASCII
