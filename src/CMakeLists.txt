@@ -138,7 +138,7 @@ endif()
 if(RASQAL_BUILD_SHARED_LIB)
   add_library(rasqal SHARED ${RASQAL_SOURCES})
 
-  target_link_libraries(rasqal ${RASQAL_EXTERNAL_LIBS})
+  target_link_libraries(rasqal raptor2 ${RASQAL_EXTERNAL_LIBS})
 
   set_target_properties (rasqal
     PROPERTIES
