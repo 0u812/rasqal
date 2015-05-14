@@ -146,6 +146,8 @@ if(RASQAL_BUILD_SHARED_LIB)
   set_target_properties (rasqal
     PROPERTIES
     VERSION ${RASQAL_VERSION})
+
+  install(TARGETS rasqal DESTINATION lib)
 endif()
 
 # Build the Rasqal static library
@@ -157,6 +159,8 @@ if(RASQAL_BUILD_STATIC_LIB)
   set_target_properties (rasqal-static
     PROPERTIES
     VERSION ${RASQAL_VERSION})
+
+  install(TARGETS rasqal-static DESTINATION lib)
 endif()
 
 # ** Tests ** ------------------------------
@@ -166,4 +170,6 @@ if(RASQAL_QUERY_SPARQL)
   add_test(NAME sparql_lexer_test COMMAND sparql_lexer_test)
   set_target_properties(sparql_lexer_test PROPERTIES COMPILE_FLAGS "-DSTANDALONE")
   target_link_libraries(sparql_lexer_test rasqal)
+
+  install(TARGETS sparql_lexer_test DESTINATION test)
 endif()
